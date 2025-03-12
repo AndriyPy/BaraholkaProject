@@ -20,6 +20,10 @@ class User(db.Model):
         self.email = email
         self.password = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
+    def check_password(self, password):
+        return bcrypt.checkpw(password.encode(), self.password.encode())
+
+
 class Good(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=True)

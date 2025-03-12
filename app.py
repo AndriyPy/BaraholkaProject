@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 from model import User, Good, db
 
 app = Flask(__name__)
@@ -24,7 +24,26 @@ def registration():
     db.session.add(new_user)
     db.session.commit()
     db.session.close()
-    return render_template('register.html')
+    return redirect("index")
+
+
+@app.get("/login")
+def login():
+    return render_template("login.html")
+
+@app.post("/login")
+def login():
+    email = request.form['email']
+    password = request.form['password']
+
+    user = User.query.filter_by(email=email).first() #пошук за email
+    if user and user.check_password(password):
+        session['name'] = user.name
+        session['email'] = user.email
+        session['password'] = user.password
+        return redirect("index")
+    else:
+        return render_template("login.html")
 
 
 
