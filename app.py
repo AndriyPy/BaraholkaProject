@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, session as flask_sesion
 from base import create_db, Session
 from model import User, Product
 
@@ -50,9 +50,9 @@ def postlogin():
     user = db_session.query(User).filter_by(email=email).first() #пошук юзера за емейлом
 
     if user and user.check_password(password):
-        db_session["id"] = user.id
-        db_session["name"] = user.name
-        db_session["email"] = user.email
+        flask_sesion["id"] = user.id
+        flask_sesion["name"] = user.name
+        flask_sesion["email"] = user.email
         flash("Вхід виконано успішно!")
         db_session.close()
         return redirect("/")
@@ -65,7 +65,7 @@ def postlogin():
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
-    flask_session.clear()
+    flask_sesion.clear()
     flash("Ви вийшли з акаунту.")
     return redirect("/")
 
@@ -82,7 +82,7 @@ def postadd_good():
     description = request.form.get('description')
     price = request.form.get('price')
     image = request.form.get('image')
-    user_id = flask_session.get('id')
+    user_id = flask_sesion.get('id')
 
     new_product = Product(name=name, description=description, price=price, image=image, user_id=user_id)
 
