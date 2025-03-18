@@ -19,6 +19,21 @@ def index():
 def add_to_card():
     db_session = Session()
 
+    product_id = request.form.get("product_id")
+    user_id = flask_sesion.get("id")
+
+    if not user_id:
+        flash("вам потрібно увійти")
+        return redirect("/login")
+
+    else:
+        product = db_session.query(Product).get(product_id)
+        new_card_item = Card(user_id=user_id, product_id=product.id, price=product.price)
+        db_session.add(new_card_item)
+        db_session.commit()
+        db_session.close()
+        return redirect("card")
+
 
 
 @app.get("/signup")
