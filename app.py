@@ -1,13 +1,12 @@
-from flask import Flask, render_template, request, redirect, session, flash
-from base import create_db, Session, engine
+from flask import Flask, render_template, request, redirect, flash
+from base import create_db, Session
 from model import User, Product
-from flask_login import login_required
 
 
 app = Flask(__name__)
 app.secret_key = "very_secret_key"
 
-@login_required
+
 @app.get("/")
 def index():
     return render_template("index.html")
@@ -31,7 +30,7 @@ def postregistration():
         return redirect("/")
     except Exception as exception:
         session.rollback()  #session.rollback() — це метод, який використовується в бібліотеці SQLAlchemy для скасування поточної транзакції та повернення до стану, який був до початку цієї транзакції.
-        flash(f"Error: {exception}", "danger")
+        flash(f"Error: {exception}", "сталася помилка")
     finally:
         session.close()
     return render_template("register.html")
@@ -41,30 +40,39 @@ def postregistration():
 def login():
     return render_template("login.html")
 
-
 @app.post("/login")
 def postlogin():
     db_session = Session()
+
     email = request.form.get('email')
     password = request.form.get('password')
-    user = db_session.execute(User.query.filter_by(email=email).statement).scalars().first()  # Пошук юзера за email
+
+    user = db_session.query(User).filter_by(email=email).first() #пошук юзера за емейлом
+
     if user and user.check_password(password):
-        db_session["user_id"] = user.id
+        db_session["id"] = user.id
         db_session["name"] = user.name
         db_session["email"] = user.email
-        flash("Вхід виконано успішно!", "success")
+        flash("Вхід виконано успішно!")
+        db_session.close()
         return redirect("/")
     else:
         flash("Неправильний email або пароль")
+        db_session.close()
         return render_template("login.html")
-    db_session.close()
 
+
+
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    flask_session.clear()
+    flash("Ви вийшли з акаунту.")
+    return redirect("/")
 
 
 @app.get("/add_good")
 def add_good():
-    return render_template("good.html")
-
+    return render_template("add_good.html")
 
 @app.post("/add_good")
 def postadd_good():
@@ -73,19 +81,20 @@ def postadd_good():
     name = request.form.get('name')
     description = request.form.get('description')
     price = request.form.get('price')
-    photo = request.form.get('photo')
-    new_product = Product(name=name, description=description, price=price, photo=photo)
-    try:
+    image = request.form.get('image')
+    user_id = flask_session.get('id')
+
+    new_product = Product(name=name, description=description, price=price, image=image, user_id=user_id)
+
+    if not user_id:
+        flash("Увійдіть в профіль")
+        return redirect("/login")
+    else:
         db_session.add(new_product)
         db_session.commit()
         db_session.close()
-    except Exception as exception:
-        db_session.rollback()  # session.rollback() — це метод, який використовується в бібліотеці SQLAlchemy для скасування поточної транзакції та повернення до стану, який був до початку цієї транзакції.
-        flash(f"Error: {exception}", "danger")
-    finally:
-        db_session.close()
+    return render_template("add_good.html")
 
 
 if __name__ == "__main__":
-    create_db()
     app.run(debug=True, port=9900)

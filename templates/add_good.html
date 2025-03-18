@@ -1,10 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %}Додати товар{% endblock %}
+
+{% block content %}
+
+   <div class="container mt-5">
+            <h2 class="mb-4">Додати товар</h2>
+
+            <form action="/add_good" method="post" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Назва товару:</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label">Опис товару:</label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="price" class="form-label">Ціна (грн):</label>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">Фото товару:</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Додати товар</button>
+
+            </form>
+        </div>
+
+
+{% endblock %}
