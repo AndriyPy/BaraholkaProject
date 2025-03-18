@@ -9,7 +9,10 @@ app.secret_key = "very_secret_key"
 
 @app.get("/")
 def index():
-    return render_template("index.html")
+    db_session = Session()
+    products = db_session.query(Product)
+    db_session.close()
+    return render_template("index.html", goods=products)
 
 
 @app.get("/signup")
