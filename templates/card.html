@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2 class="text-3xl font-bold text-center mb-6">Корзина</h2>
+<div>
+  <table>
+    <thead>
+      <tr>
+        <th>Назва товару</th>
+        <th>Ціна</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in card %}
+      <tr>
+        <td class="py-3 px-4">{{ item.product.name }}</td>
+        <td class="py-3 px-4 text-green-600 font-bold">{{ item.product.price }} грн</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+{% endblock %}

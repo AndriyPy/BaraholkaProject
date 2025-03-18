@@ -14,6 +14,7 @@ class User(Base):
     password: Mapped[str] = mapped_column(String(255), nullable=False)
 
     products: Mapped[list["Product"]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    cards: Mapped[list["Card"]] = relationship("Card", back_populates="user")
 
     def __init__(self, email, name, password):
         self.name = name
@@ -25,7 +26,6 @@ class User(Base):
 
     def __repr__(self):
         return f"<User(id={self.id}, name='{self.name}', email='{self.email}')>"
-
 
 
 class Product(Base):
@@ -40,9 +40,28 @@ class Product(Base):
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
     user: Mapped["User"] = relationship(back_populates="products")
+    cards: Mapped[list["Card"]] = relationship("Card", back_populates="product")
 
     def __str__(self):
         return self.name.capitalize()
 
     def __repr__(self):
         return f"<Product(id={self.id}, name='{self.name}', price={self.price})>"
+
+
+
+
+class Card(Base):
+    __tablename__ = "card"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id"), nullable=False)
+    price: Mapped[float] = mapped_column(nullable=False)
+
+    user: Mapped["User"] = relationship("User", back_populates="cards")
+    product: Mapped["Product"] = relationship("Product", back_populates="cards")
+
+    def __repr__(self):
+        return f"<Card(id={self.id}, user_id={self.user_id}, product_id={self.product_id}, price={self.price})>"
+

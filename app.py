@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session as flask_sesion
 from base import create_db, Session
-from model import User, Product
+from model import User, Product, Card
 
 
 app = Flask(__name__)
@@ -13,6 +13,12 @@ def index():
     products = db_session.query(Product)
     db_session.close()
     return render_template("index.html", goods=products)
+
+
+@app.post("/add_to_card")
+def add_to_card():
+    db_session = Session()
+
 
 
 @app.get("/signup")
@@ -50,7 +56,7 @@ def postlogin():
     email = request.form.get('email')
     password = request.form.get('password')
 
-    user = db_session.query(User).filter_by(email=email).first() #пошук юзера за емейлом
+    user = db_session.query(User).filter_by(email=email).first()
 
     if user and user.check_password(password):
         flask_sesion["id"] = user.id
@@ -97,6 +103,22 @@ def postadd_good():
         db_session.commit()
         db_session.close()
     return render_template("add_good.html")
+
+
+@app.get("/card")
+def card():
+    db_session = Session()
+    user_id = flask_sesion.get('id')
+
+    if not user_id:
+        flash("Вам потрібно увійти")
+        return redirect('/login')
+
+    else:
+        products = db_session.query(Card).filter_by(user_id=user_id).all()
+        db_session.close()
+
+    return render_template("card.html", card=products)
 
 
 if __name__ == "__main__":
