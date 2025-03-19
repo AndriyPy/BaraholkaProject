@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, flash, session as flask_sesion
 from base import create_db, Session
-from model import User, Product, Card
+from model import User, Product, Card, joinedload
 
 
 app = Flask(__name__)
@@ -22,18 +22,35 @@ def add_to_card():
     product_id = request.form.get("product_id")
     user_id = flask_sesion.get("id")
 
-    if not user_id:
-        flash("вам потрібно увійти")
-        return redirect("/login")
+    product = db_session.query(Product).get(product_id)
 
-    else:
-        product = db_session.query(Product).get(product_id)
+    if product:
         new_card_item = Card(user_id=user_id, product_id=product.id, price=product.price)
         db_session.add(new_card_item)
         db_session.commit()
-        db_session.close()
-        return redirect("card")
+        flash("Товар додано в корзину.")
 
+    else:
+        flash("Товар не знайдено.")
+
+    db_session.close()
+    return redirect("/card")
+
+
+@app.get("/card")
+def card():
+    db_session = Session()
+    user_id = flask_sesion.get('id')
+
+    if not user_id:
+        flash("Вам потрібно увійти")
+        return redirect('/login')
+
+    #joinedload для попереднього завантаження даних
+    products = (db_session.query(Card).options(joinedload(Card.product)).filter_by(user_id=user_id).all())
+    db_session.close()
+
+    return render_template("card.html", card=products)
 
 
 @app.get("/signup")
@@ -120,20 +137,6 @@ def postadd_good():
     return render_template("add_good.html")
 
 
-@app.get("/card")
-def card():
-    db_session = Session()
-    user_id = flask_sesion.get('id')
-
-    if not user_id:
-        flash("Вам потрібно увійти")
-        return redirect('/login')
-
-    else:
-        products = db_session.query(Card).filter_by(user_id=user_id).all()
-        db_session.close()
-
-    return render_template("card.html", card=products)
 
 
 if __name__ == "__main__":

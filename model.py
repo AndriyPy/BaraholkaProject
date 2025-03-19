@@ -1,5 +1,5 @@
 from sqlalchemy import String, ForeignKey, LargeBinary
-from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship, joinedload
 from base import Base, create_db
 import bcrypt
 
