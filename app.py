@@ -7,12 +7,16 @@ app = Flask(__name__)
 app.secret_key = "very_secret_key"
 
 
+
+
 @app.get("/")
 def index():
     db_session = Session()
-    products = db_session.query(Product)
+    products = db_session.query(Product).all()
+    user_id = flask_sesion.get('id')
+    user = db_session.query(User).filter_by(id=user_id).first()
     db_session.close()
-    return render_template("index.html", goods=products)
+    return render_template("index.html", goods=products, user=user)
 
 
 @app.post("/add_to_card")

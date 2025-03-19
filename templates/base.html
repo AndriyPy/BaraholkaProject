@@ -21,10 +21,15 @@
 
                 <!-- Меню -->
                 <div class="flex space-x-4">
-                    <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Sign-up</a>
-                    <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Login</a>
-                    <a href="/add_good" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Create Good</a>
-                    <a href="/logout" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Logout</a>
+                    {% if session.get('id') %}
+                        <!-- Якщо користувач увійшов -->
+                        <a href="/add_good" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Create Good</a>
+                        <a href="/logout" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Logout</a>
+                    {% else %}
+                        <!-- Якщо користувач не увійшов -->
+                        <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Sign-up</a>
+                        <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Login</a>
+                    {% endif %}
 
                     <!-- Іконка корзини -->
                     <a href="/card" class="relative px-3 py-2">
