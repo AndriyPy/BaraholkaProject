@@ -4,22 +4,21 @@
 
 {% block content %}
     <h2 class="text-3xl font-bold text-center mb-6">Список товарів</h2>
-    <div class="overflow-x-auto">
-        <table class="w-full border-collapse bg-white shadow-lg rounded-lg">
-            <tbody>
-                {% for item in goods %}
-                <tr class="text-center border">
-                    <td class="py-3 px-4">{{ item.name }}</td>
-                    <td class="py-3 px-4 text-green-600 font-bold">{{ item.price }} грн</td>
-                    <td class="py-3 px-4">
-                        <form action="{{ url_for('add_to_card') }}" method="POST">
-                            <input type="hidden" name="product_id" value="{{ item.id }}">
-                            <button type="submit" class="btn btn-primary">Додати до корзини</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {% for item in goods %}
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-48 object-cover">
+            <div class="p-4">
+                <h3 class="text-lg font-semibold">{{ item.name }}</h3>
+                <p class="text-green-600 font-bold">{{ item.price }} грн</p>
+                <form action="{{ url_for('add_to_card') }}" method="POST">
+                    <input type="hidden" name="product_id" value="{{ item.id }}">
+                    <button type="submit" class="mt-2 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+                        Додати до корзини
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
     </div>
 {% endblock %}

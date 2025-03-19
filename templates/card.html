@@ -2,23 +2,20 @@
 
 {% block content %}
 <h2 class="text-3xl font-bold text-center mb-6">Корзина</h2>
-<div>
-  <table>
-    <thead>
-      <tr>
-        <th>Назва товару</th>
-        <th>Ціна</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for item in card %}
-      <tr>
-        <td class="py-3 px-4">{{ item.product.name }}</td>
-        <td class="py-3 px-4 text-green-600 font-bold">{{ item.product.price }} грн</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {% if card %}
+    {% for item in card %}
+    <div class="border rounded-lg shadow-lg p-4 bg-white">
+      <img src="{{ item.product.image }}" alt="{{ item.product.name }}" class="w-full h-48 object-cover rounded-t-lg">
+      <div class="text-center mt-4">
+        <h3 class="text-xl font-semibold">{{ item.product.name }}</h3>
+        <p class="text-gray-500">{{ item.product.description }}</p>
+        <p class="text-green-600 font-bold mt-2">{{ item.product.price }} грн</p>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p class="text-center text-gray-500">Ваша корзина порожня.</p>
+  {% endif %}
 </div>
-
 {% endblock %}

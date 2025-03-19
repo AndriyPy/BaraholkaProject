@@ -22,6 +22,10 @@ def add_to_card():
     product_id = request.form.get("product_id")
     user_id = flask_sesion.get("id")
 
+    if not user_id:
+        flash("спочатку увійдіть")
+        return redirect("/login")
+
     product = db_session.query(Product).get(product_id)
 
     if product:
