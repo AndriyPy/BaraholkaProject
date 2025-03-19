@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, flash, session as flask_sesion
+from flask import Flask, render_template, request, redirect, flash, session as flask_sesion, jsonify
 from base import create_db, Session
 from model import User, Product, Card, joinedload
 
@@ -140,6 +140,27 @@ def postadd_good():
         db_session.close()
     return render_template("add_good.html")
 
+
+@app.post("/deletegood")
+def delete():
+    db_session = Session()
+
+    product_id = request.form.get("product_id")
+    user_id = flask_sesion.get("id")
+
+    if not user_id:
+        flash("спочатку увійдіть")
+        return redirect("/login")
+
+    product = db_session.query(Product).get(product_id)
+
+    cart_item = db_session.query(Card).filter_by(user_id=user_id, product_id=product.id).first()
+
+    if cart_item:
+        db_session.delete(cart_item)
+        db_session.commit()
+        flash("Товар видалено з корзини.")
+    return redirect('/card')
 
 
 
