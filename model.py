@@ -50,7 +50,6 @@ class Product(Base):
 
 
 
-
 class Card(Base):
     __tablename__ = "card"
 
@@ -64,4 +63,3 @@ class Card(Base):
 
     def __repr__(self):
         return f"<Card(id={self.id}, user_id={self.user_id}, product_id={self.product_id}, price={self.price})>"
-

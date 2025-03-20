@@ -8,47 +8,40 @@
 </head>
 <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
 
-    <!-- Навігація -->
     <nav class="bg-gray-800 text-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
 
-                <!-- Логотип -->
                 <a href="/" class="flex items-center">
                     <img class="h-8 w-auto" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt_kxIflZGweBrTdun_U8l6ZIwPYKlh4V4eg&s" alt="Барахолка">
                     <span class="ml-3 text-lg font-semibold">Барахолка</span>
                 </a>
 
-                <!-- Меню -->
                 <div class="flex space-x-4">
                     {% if session.get('id') %}
-                        <!-- Якщо користувач увійшов -->
                         <a href="/add_good" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Create Good</a>
                         <a href="/logout" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Logout</a>
+                        <a href="/profile" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Profile</a>
+
+                        <a href="/card" class="relative px-3 py-2">
+                            <svg class="w-6 h-6 text-white hover:text-gray-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l1 3h13l1-3h2M5 6h14l1 10H4L5 6zm1 10a2 2 0 104 0m6 0a2 2 0 104 0"/>
+                            </svg>
+                        </a>
                     {% else %}
-                        <!-- Якщо користувач не увійшов -->
                         <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Sign-up</a>
                         <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Login</a>
                     {% endif %}
-
-                    <!-- Іконка корзини -->
-                    <a href="/card" class="relative px-3 py-2">
-                        <svg class="w-6 h-6 text-white hover:text-gray-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l1 3h13l1-3h2M5 6h14l1 10H4L5 6zm1 10a2 2 0 104 0m6 0a2 2 0 104 0"/>
-                        </svg>
-                    </a>
                 </div>
 
             </div>
         </div>
     </nav>
 
-    <!-- Основний контент -->
     <main class="flex-grow container mx-auto px-6 py-12">
         {% block content %}{% endblock %}
     </main>
 
-    <!-- Футер -->
     <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
         &copy; 2025 Барахолка. Всі права захищені.
     </footer>

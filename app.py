@@ -7,8 +7,6 @@ app = Flask(__name__)
 app.secret_key = "very_secret_key"
 
 
-
-
 @app.get("/")
 def index():
     db_session = Session()
@@ -111,7 +109,6 @@ def postlogin():
         return render_template("login.html")
 
 
-
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     flask_sesion.clear()
@@ -165,6 +162,46 @@ def delete():
         db_session.commit()
         flash("Товар видалено з корзини.")
     return redirect('/card')
+
+
+@app.get("/profile")
+def profile():
+    db_session = Session()
+
+    user_id = flask_sesion.get('id')
+    if not user_id:
+        flash("Спочатку увійдіть")
+        return redirect("/login")
+
+    user = db_session.query(User).filter_by(id=user_id).first()
+
+    goods = db_session.query(Product).filter_by(user_id=user_id).all()
+
+    db_session.close()
+
+    return render_template("profile.html", user=user, goods=goods)
+
+
+
+
+@app.post("/deleteprofile")
+def deleteprofile():
+    db_session = Session()
+
+    user_id = flask_sesion.get('id')
+    if not user_id:
+        flash("Вам потрібно увійти")
+        return redirect("/login")
+
+    product_id = request.form.get('product_id')
+
+    db_session.query(Product).filter_by(id=product_id, user_id=user_id).delete()
+    db_session.commit()
+    db_session.close()
+
+    flash("Товар успішно видалено.")
+    return redirect('/profile')
+
 
 
 
