@@ -127,7 +127,9 @@ def postadd_good():
     name = request.form.get('name')
     description = request.form.get('description')
     price = request.form.get('price')
-    image = request.form.get('image')
+    filename = request.files['image']
+    image = filename.read()
+    print(image)
     user_id = flask_sesion.get('id')
 
     new_product = Product(name=name, description=description, price=price, image=image, user_id=user_id)
