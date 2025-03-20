@@ -182,8 +182,6 @@ def profile():
     return render_template("profile.html", user=user, goods=goods)
 
 
-
-
 @app.post("/deleteprofile")
 def deleteprofile():
     db_session = Session()
@@ -201,8 +199,6 @@ def deleteprofile():
 
     flash("Товар успішно видалено.")
     return redirect('/profile')
-
-
 
 
 if __name__ == "__main__":
