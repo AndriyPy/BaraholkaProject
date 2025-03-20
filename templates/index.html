@@ -7,7 +7,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {% for item in goods %}
         <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+
             <img src="{{ item.image }}" alt="{{ item.name }}" class="w-full h-48 object-cover">
+
             <div class="p-4">
                 <h3 class="text-lg font-semibold">{{ item.name }}</h3>
                 <p class="text-green-600 font-bold">{{ item.price }} грн</p>
