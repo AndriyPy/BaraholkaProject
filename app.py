@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash, session as flask_sesion, jsonify
 from base import create_db, Session
 from model import User, Product, Card, joinedload
+import base64
+
 
 
 app = Flask(__name__)
@@ -11,6 +13,11 @@ app.secret_key = "very_secret_key"
 def index():
     db_session = Session()
     products = db_session.query(Product).all()
+
+    for product in products:
+        if product.image:
+            product.image_base64 = base64.b64encode(product.image).decode('utf-8')
+
     user_id = flask_sesion.get('id')
     user = db_session.query(User).filter_by(id=user_id).first()
     db_session.close()
@@ -52,11 +59,16 @@ def card():
         flash("Вам потрібно увійти")
         return redirect('/login')
 
-    #joinedload для попереднього завантаження даних
-    products = (db_session.query(Card).options(joinedload(Card.product)).filter_by(user_id=user_id).all())
+    products = db_session.query(Card).options(joinedload(Card.product)).filter_by(user_id=user_id).all()
+
+    for item in products:
+        if item.product.image:
+            item.product.image_base64 = base64.b64encode(item.product.image).decode('utf-8')
+
     db_session.close()
 
     return render_template("card.html", card=products)
+
 
 
 @app.get("/signup")
@@ -175,12 +187,15 @@ def profile():
         return redirect("/login")
 
     user = db_session.query(User).filter_by(id=user_id).first()
-
     goods = db_session.query(Product).filter_by(user_id=user_id).all()
 
-    db_session.close()
+    for product in goods:
+        if product.image:
+            product.image_base64 = base64.b64encode(product.image).decode('utf-8')
 
+    db_session.close()
     return render_template("profile.html", user=user, goods=goods)
+
 
 
 @app.post("/deleteprofile")
