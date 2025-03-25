@@ -1,11 +1,12 @@
 from flask import Flask, render_template, request, redirect, flash, session as flask_sesion, jsonify
 from base import create_db, Session
 from model import User, Product, Card, joinedload
+from datetime import timedelta
 import base64
 
 
-
 app = Flask(__name__)
+app.permanent_session_lifetime = timedelta(days=2)
 app.secret_key = "very_secret_key"
 
 
@@ -70,28 +71,38 @@ def card():
     return render_template("card.html", card=products)
 
 
-
 @app.get("/signup")
 def registration():
     return render_template("register.html")
 
+
 @app.post("/signup")
 def postregistration():
-    session = Session()
+    db_session = Session()
     name = request.form.get('name')
     email = request.form.get('email')
     password = request.form.get('password')
+
+    flask_sesion.permanent = True
+
     try:
-        new_user = User(email, name, password)
-        session.add(new_user)
-        session.commit()
-        session.close()
+        new_user = User(email=email, name=name, password=password)
+        db_session.add(new_user)
+        db_session.commit()
+
+        flask_sesion["id"] = new_user.id
+        flask_sesion["name"] = new_user.name
+        flask_sesion["email"] = new_user.email
+
+        flash("Реєстрація успішна")
         return redirect("/")
+
     except Exception as exception:
-        session.rollback()  #session.rollback() — це метод, який використовується в бібліотеці SQLAlchemy для скасування поточної транзакції та повернення до стану, який був до початку цієї транзакції.
-        flash(f"Error: {exception}", "сталася помилка")
+        db_session.rollback() #— це метод, який використовується для скасування поточної транзакції
+        flash(f"Помилка: {exception}")
     finally:
-        session.close()
+        db_session.close()
+
     return render_template("register.html")
 
 
@@ -107,6 +118,8 @@ def postlogin():
     password = request.form.get('password')
 
     user = db_session.query(User).filter_by(email=email).first()
+
+    flask_sesion.permanent = True
 
     if user and user.check_password(password):
         flask_sesion["id"] = user.id
@@ -195,7 +208,6 @@ def profile():
 
     db_session.close()
     return render_template("profile.html", user=user, goods=goods)
-
 
 
 @app.post("/deleteprofile")
