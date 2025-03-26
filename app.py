@@ -236,11 +236,45 @@ def deleteprofile():
     return redirect('/profile')
 
 
-
 @app.get('/order')
 def order():
     return render_template('order.html')
 
+
+@app.get('/edit_good/<int:id>')
+def editgood(id):
+    db_session = Session()
+    product = db_session.query(Product).filter_by(id=id).first()
+
+    if product and product.image:
+        product.image_base64 = base64.b64encode(product.image).decode('utf-8')
+
+    db_session.close()
+    return render_template('edit_tovar.html', product=product)
+
+
+@app.post('/edit_good/<int:id>')
+def edittivar(id):
+    db_session = Session()
+    product = db_session.query(Product).filter_by(id=id).first()
+
+    name = request.form.get('name')
+    description = request.form.get('description')
+    price = request.form.get('price')
+    image = request.files.get('image')
+
+    product.name = name
+    product.description = description
+    product.price = price
+
+    if image:
+        product.image = image.read()
+
+    db_session.commit()
+    db_session.close()
+
+    flash('Товар відредаговано!')
+    return redirect('/profile')
 
 
 if __name__ == "__main__":
