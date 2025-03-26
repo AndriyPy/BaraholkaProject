@@ -5,6 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Оголошення{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .nav-link:hover {
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            background-color: #4B5563;
+            transform: scale(1.05);
+        }
+        .footer {
+            background-color: #1F2937;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 text-gray-900 min-h-screen flex flex-col">
 
@@ -19,9 +29,9 @@
 
                 <div class="flex space-x-4">
                     {% if session.get('id') %}
-                        <a href="/add_good" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Create Good</a>
-                        <a href="/logout" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Logout</a>
-                        <a href="/profile" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-red-600">Profile</a>
+                        <a href="/add_good" class="px-3 py-2 rounded-md text-sm font-medium nav-link hover:bg-gray-700">Створити товар</a>
+                        <a href="/logout" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Вихід</a>
+                        <a href="/profile" class="px-3 py-2 rounded-md text-sm font-medium nav-link hover:bg-gray-700">Профіль</a>
 
                         <a href="/card" class="relative px-3 py-2">
                             <svg class="w-6 h-6 text-white hover:text-gray-400 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -29,8 +39,8 @@
                             </svg>
                         </a>
                     {% else %}
-                        <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Sign-up</a>
-                        <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-700">Login</a>
+                        <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium nav-link hover:bg-gray-700">Реєстрація</a>
+                        <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium nav-link hover:bg-gray-700">Вхід</a>
                     {% endif %}
                 </div>
 
@@ -42,7 +52,7 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-gray-800 text-white text-center py-4 mt-auto">
+    <footer class="footer text-white text-center py-4 mt-auto">
         &copy; 2025 Барахолка. Всі права захищені.
     </footer>
 

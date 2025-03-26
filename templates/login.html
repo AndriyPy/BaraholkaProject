@@ -3,23 +3,22 @@
 {% block content %}
 <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
   <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-    <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Log in</h2>
+    <h2 class="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">Вхід</h2>
   </div>
 
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
     <form class="space-y-6" action="/login" method="POST">
 
       <div>
-        <label for="email" class="block text-sm font-medium text-gray-900">Email address</label>
+        <label for="email" class="block text-sm font-medium text-gray-900">Email</label>
         <div class="mt-2">
           <input type="email" name="email" id="email" autocomplete="email" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm">
         </div>
       </div>
 
-
       <div>
         <div class="flex items-center justify-between">
-          <label for="password" class="block text-sm font-medium text-gray-900">Password</label>
+          <label for="password" class="block text-sm font-medium text-gray-900">Пароль</label>
         </div>
         <div class="mt-2">
           <input type="password" name="password" id="password" autocomplete="current-password" required class="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-indigo-600 sm:text-sm">
@@ -27,59 +26,27 @@
       </div>
 
       <div>
-        <button type="submit" class="w-full flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus:outline-2 focus:outline-indigo-600">Log in</button>
+        <button type="submit" class="w-full flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-xs hover:bg-indigo-500 focus:outline-2 focus:outline-indigo-600 transition-all">Вхід</button>
       </div>
     </form>
 
+    <p class="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">АБО</p>
 
-     <p
-              class="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
-              OR
-            </p>
-          </div>
+    <div class="space-y-4">
+      <a href="#!" class="flex w-full items-center justify-center rounded bg-blue-600 px-7 py-2 text-center text-sm font-medium uppercase text-white shadow-lg hover:bg-blue-500 focus:outline-none transition-all">
+        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+          <path d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"/>
+        </svg>
+        Продовжити через Facebook
+      </a>
 
-
-          <a
-            class="mb-3 flex w-full items-center justify-center rounded bg-primary px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-primary-3 transition duration-150 ease-in-out hover:bg-primary-accent-300 hover:shadow-primary-2 focus:bg-primary-accent-300 focus:shadow-primary-2 focus:outline-none focus:ring-0 active:bg-primary-600 active:shadow-primary-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-            style="background-color: #3b5998"
-            href="#!"
-            role="button"
-            data-twe-ripple-init
-            data-twe-ripple-color="light">
-            <span
-              class="me-2 fill-white [&>svg]:mx-auto [&>svg]:h-3.5 [&>svg]:w-3.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512">
-                <path
-                  d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z" />
-              </svg>
-            </span>
-            Continue with Facebook
-          </a>
-          <a
-            class="mb-3 flex w-full items-center justify-center rounded bg-info px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-info-3 transition duration-150 ease-in-out hover:bg-info-accent-300 hover:shadow-info-2 focus:bg-info-accent-300 focus:shadow-info-2 focus:outline-none focus:ring-0 active:bg-info-600 active:shadow-info-2 dark:shadow-black/30 dark:hover:shadow-dark-strong dark:focus:shadow-dark-strong dark:active:shadow-dark-strong"
-            style="background-color: #55acee"
-            href="#!"
-            role="button"
-            data-twe-ripple-init
-            data-twe-ripple-color="light">
-            <span class="me-2 fill-white [&>svg]:h-3.5 [&>svg]:w-3.5">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 512 512">
-                <path
-                  d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z" />
-              </svg>
-            </span>
-            Continue with X
-          </a>
-    </form>
-      </div>
+      <a href="#!" class="flex w-full items-center justify-center rounded bg-blue-400 px-7 py-2 text-center text-sm font-medium uppercase text-white shadow-lg hover:bg-blue-300 focus:outline-none transition-all">
+        <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path d="M389.2 48h70.6L305.6 224.2 487 464H345L233.7 318.6 106.5 464H35.8L200.7 275.5 26.8 48H172.4L272.9 180.9 389.2 48zM364.4 421.8h39.1L151.1 88h-42L364.4 421.8z"/>
+        </svg>
+        Продовжити через X
+      </a>
     </div>
-
-
-
   </div>
 </div>
 {% endblock %}

@@ -12,8 +12,13 @@ app.secret_key = "very_secret_key"
 
 @app.get("/")
 def index():
+    search_query = request.args.get('search', '')
     db_session = Session()
-    products = db_session.query(Product).all()
+
+    if search_query:
+        products = db_session.query(Product).filter(Product.name.ilike(f"%{search_query}%")).all()
+    else:
+        products = db_session.query(Product).all()
 
     for product in products:
         if product.image:
@@ -21,7 +26,9 @@ def index():
 
     user_id = flask_sesion.get('id')
     user = db_session.query(User).filter_by(id=user_id).first()
+
     db_session.close()
+
     return render_template("index.html", goods=products, user=user)
 
 
@@ -227,6 +234,13 @@ def deleteprofile():
 
     flash("Товар успішно видалено.")
     return redirect('/profile')
+
+
+
+@app.get('/order')
+def order():
+    return render_template('order.html')
+
 
 
 if __name__ == "__main__":

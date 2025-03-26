@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg mx-auto mt-10">
+    <form action="/post_ad" method="POST" class="space-y-4">
+        <div>
+            <label for="description" class="block text-gray-700 font-medium">Опис:</label>
+            <textarea id="description" name="description" placeholder="Введіть опис оголошення" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div>
+            <label for="address" class="block text-gray-700 font-medium">Адреса доставки:</label>
+            <textarea id="address" name="address" placeholder="Введіть адресу доставки" required class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div>
+            <label for="contact" class="block text-gray-700 font-medium">Контактна інформація:</label>
+            <div class="flex items-center border border-gray-300 rounded-md">
+                <span class="p-3 bg-gray-200 border-r border-gray-300">+380</span>
+                <input type="text" id="contact" name="contact" placeholder="Введіть ваш номер" required class="w-full p-3 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-gray-700 font-medium">Спосіб оплати:</label>
+            <div class="space-x-4">
+                <label for="payment_card" class="inline-flex items-center">
+                    <input type="radio" id="payment_card" name="payment_method" value="card" class="mr-2">
+                    <span>Карткою</span>
+                </label>
+                <label for="payment_cash" class="inline-flex items-center">
+                    <input type="radio" id="payment_cash" name="payment_method" value="cash" checked class="mr-2">
+                    <span>Готівкою</span>
+                </label>
+            </div>
+        </div>
+
+        <div id="card_details" class="hidden">
+            <div>
+                <label for="card_number" class="block text-gray-700 font-medium">Номер картки:</label>
+                <input type="text" id="card_number" name="card_number" placeholder="Введіть номер картки" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="expiry_date" class="block text-gray-700 font-medium">Термін дії:</label>
+                <input type="text" id="expiry_date" name="expiry_date" placeholder="MM/YY" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div>
+                <label for="cvv" class="block text-gray-700 font-medium">CVV:</label>
+                <input type="text" id="cvv" name="cvv" placeholder="CVV" class="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+        </div>
+
+        <button type="submit" class="w-full bg-blue-500 text-white py-3 rounded-md font-semibold hover:bg-blue-600 transition">Додати оголошення</button>
+    </form>
+</div>
+
+<script>
+    document.querySelectorAll('input[name="payment_method"]').forEach((radio) => {
+        radio.addEventListener('change', function() {
+            const cardDetails = document.getElementById('card_details');
+            if (this.value === 'card') {
+                cardDetails.classList.remove('hidden');
+            } else {
+                cardDetails.classList.add('hidden');
+            }
+        });
+    });
+</script>
+{% endblock %}

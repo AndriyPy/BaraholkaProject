@@ -3,22 +3,27 @@
 {% block title %}Список товарів{% endblock %}
 
 {% block content %}
-    <h2 class="text-3xl font-bold text-center mb-6">Список товарів</h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <!-- Search Form -->
+    <form class="max-w-lg mx-auto mb-10" method="get" action="{{ url_for('index') }}">
+        <div class="relative">
+            <input type="search" id="default-search" name="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="🔍 Пошук товарів..." required />
+            <button type="submit" class="absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-4 py-2 transition-all shadow-md">
+                Пошук
+            </button>
+        </div>
+    </form>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
         {% for item in goods %}
-        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-
-         <img src="data:image/jpeg;base64,{{ item.image_base64 }}" alt="{{ item.name }}">
-
-
-
-            <div class="p-4">
-                <h3 class="text-lg font-semibold">{{ item.name }}</h3>
-                <p class="text-green-600 font-bold">{{ item.price }} грн</p>
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden transition transform hover:scale-105">
+            <img src="data:image/jpeg;base64,{{ item.image_base64 }}" alt="{{ item.name }}" class="w-full h-56 object-cover">
+            <div class="p-5">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ item.name }}</h3>
+                <p class="text-lg text-green-600 font-bold mt-2">{{ item.price }} грн</p>
                 <form action="{{ url_for('add_to_card') }}" method="POST">
                     <input type="hidden" name="product_id" value="{{ item.id }}">
-                    <button type="submit" class="mt-2 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
-                        Додати до корзини
+                    <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all shadow-md">
+                        🛒 Додати до кошика
                     </button>
                 </form>
             </div>
