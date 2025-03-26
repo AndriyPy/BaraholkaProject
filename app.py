@@ -78,6 +78,7 @@ def card():
     return render_template("card.html", card=products)
 
 
+
 @app.get("/signup")
 def registration():
     return render_template("register.html")

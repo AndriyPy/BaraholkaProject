@@ -5,22 +5,28 @@
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {% if card %}
     {% for item in card %}
-    <div class="border rounded-lg shadow-lg p-4 bg-white">
-      <img src="data:image/jpeg;base64,{{ item.product.image_base64 }}" alt="{{ item.product.name }}" class="w-full h-56 object-cover rounded-md">
+      {% if item.product %}
+      <div class="border rounded-lg shadow-lg p-4 bg-white">
+        {% if item.product.image_base64 %}
+          <img src="data:image/jpeg;base64,{{ item.product.image_base64 }}" alt="{{ item.product.name }}" class="w-full h-56 object-cover rounded-md">
+        {% else %}
+          <p class="text-center text-gray-500">Фото не доступне</p>
+        {% endif %}
 
-      <div class="text-center mt-4">
-        <h3 class="text-xl font-semibold">{{ item.product.name }}</h3>
-        <p class="text-gray-500">{{ item.product.description }}</p>
-        <p class="text-green-600 font-bold mt-2">{{ item.product.price }} грн</p>
+        <div class="text-center mt-4">
+          <h3 class="text-xl font-semibold">{{ item.product.name }}</h3>
+          <p class="text-gray-500">{{ item.product.description }}</p>
+          <p class="text-green-600 font-bold mt-2">{{ item.product.price }} грн</p>
 
-        <form action="{{ url_for('delete') }}" method="post">
-          <input type="hidden" name="product_id" value="{{ item.product.id }}">
-          <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-500 focus:outline-none">
-            🗑 Видалити
-          </button>
-        </form>
+          <form action="{{ url_for('delete') }}" method="post">
+            <input type="hidden" name="product_id" value="{{ item.product.id }}">
+            <button type="submit" class="bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-500 focus:outline-none">
+              🗑 Видалити
+            </button>
+          </form>
+        </div>
       </div>
-    </div>
+      {% endif %}
     {% endfor %}
   {% else %}
     <p class="text-center text-gray-500">Ваша корзина порожня.</p>
