@@ -3,27 +3,38 @@
 {% block title %}Список товарів{% endblock %}
 
 {% block content %}
-    <!-- Search Form -->
-    <form class="max-w-lg mx-auto mb-10" method="get" action="{{ url_for('index') }}">
-        <div class="relative">
-            <input type="search" id="default-search" name="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 shadow-sm dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="🔍 Пошук товарів..." required />
-            <button type="submit" class="absolute end-2.5 bottom-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg text-sm px-4 py-2 transition-all shadow-md">
-                Пошук
+    <div class="max-w-3xl mx-auto my-8">
+        <form class="relative" method="get" action="{{ url_for('index') }}">
+            <input type="search" id="default-search" name="search"
+                   class="w-full p-4 pl-12 text-gray-900 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                   placeholder="Пошук товарів..." required />
+            <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                🔍 Пошук
             </button>
-        </div>
-    </form>
+            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-4.35-4.35M16.65 9.35a7 7 0 1 1-7-7 7 7 0 0 1 7 7Z" />
+                </svg>
+            </div>
+        </form>
+    </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <h2 class="text-4xl font-extrabold text-center mb-8">🛍️ Каталог товарів</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
         {% for item in goods %}
-        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-xl overflow-hidden transition transform hover:scale-105">
-            <img src="data:image/jpeg;base64,{{ item.image_base64 }}" alt="{{ item.name }}" class="w-full h-56 object-cover">
-            <div class="p-5">
-                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">{{ item.name }}</h3>
-                <p class="text-lg text-green-600 font-bold mt-2">{{ item.price }} грн</p>
+        <div class="bg-white shadow-lg rounded-2xl overflow-hidden hover:shadow-2xl transition transform hover:-translate-y-1">
+            <a href="{{ url_for('good_detail', product_id=item.id) }}" class="block">
+                <img src="data:image/jpeg;base64,{{ item.image_base64 }}"
+                     alt="{{ item.name }}"
+                     class="w-full h-64 object-cover transition-transform hover:scale-105">
+            </a>
+            <div class="p-6 text-center">
+                <h3 class="text-xl font-semibold text-gray-900">{{ item.name }}</h3>
+                <p class="text-lg text-green-600 font-bold mt-2">💰 {{ item.price }} грн</p>
                 <form action="{{ url_for('add_to_card') }}" method="POST">
                     <input type="hidden" name="product_id" value="{{ item.id }}">
-                    <button type="submit" class="mt-4 w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all shadow-md">
-                        🛒 Додати до кошика
+                    <button type="submit" class="mt-4 w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition">
+                        ➕ Додати до кошика
                     </button>
                 </form>
             </div>

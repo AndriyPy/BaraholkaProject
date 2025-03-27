@@ -67,15 +67,16 @@ def card():
         flash("Вам потрібно увійти")
         return redirect('/login')
 
-    products = db_session.query(Card).options(joinedload(Card.product)).filter_by(user_id=user_id).all()
+    products = db_session.query(Card).options(joinedload(Card.product)).filter_by(user_id=user_id).all() or []
 
     for item in products:
-        if item.product.image:
+        if item.product and item.product.image:
             item.product.image_base64 = base64.b64encode(item.product.image).decode('utf-8')
 
     db_session.close()
 
     return render_template("card.html", card=products)
+
 
 
 
@@ -276,6 +277,22 @@ def edittivar(id):
 
     flash('Товар відредаговано!')
     return redirect('/profile')
+
+
+@app.route("/cart/<int:product_id>")
+def good_detail(product_id):
+    db_session = Session()
+    product = db_session.query(Product).filter_by(id=product_id).first()
+
+    if not product:
+        flash("Товар не знайдено.")
+        return redirect("/")
+
+    if product.image:
+        product.image_base64 = base64.b64encode(product.image).decode('utf-8')
+    db_session.close()
+
+    return render_template("good_detail.html", product=product)
 
 
 if __name__ == "__main__":

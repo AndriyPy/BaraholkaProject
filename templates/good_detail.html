@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <div class="relative">
+        <img src="data:image/jpeg;base64,{{ product.image_base64 }}" alt="{{ product.name }}"
+             class="w-full h-96 object-cover rounded-lg shadow-md">
+        <a href="{{ url_for('index') }}"
+           class="absolute top-4 left-4 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm hover:bg-gray-700 transition">
+            ← Назад
+        </a>
+    </div>
+
+    <div class="mt-6">
+        <h1 class="text-4xl font-bold text-gray-900">{{ product.name }}</h1>
+        <p class="text-gray-600 text-lg mt-3 leading-relaxed">{{ product.description }}</p>
+        <p class="text-green-600 font-bold text-2xl mt-4">{{ product.price }} грн</p>
+
+        <div class="mt-6 flex flex-col sm:flex-row gap-4">
+            <!-- Додати до корзини -->
+            <form action="{{ url_for('add_to_card') }}" method="POST" class="w-full sm:w-auto">
+                <input type="hidden" name="product_id" value="{{ product.id }}">
+                <button type="submit"
+                        class="w-full sm:w-auto bg-blue-500 text-white py-3 px-8 rounded-lg text-lg font-semibold
+                               shadow-md hover:bg-blue-600 transition-all duration-200">
+                    🛒 Додати до корзини
+                </button>
+            </form>
+
+            <a href="{{ url_for('order', product_id=product.id) }}"
+               class="w-full sm:w-auto bg-green-500 text-white py-3 px-8 rounded-lg text-lg font-semibold
+                      text-center shadow-md hover:bg-green-600 transition-all duration-200">
+                💳 Купити зараз
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
